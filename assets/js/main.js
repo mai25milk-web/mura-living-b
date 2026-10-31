@@ -13,7 +13,7 @@
 
   // 扇形のモチーフをスクロールに合わせてゆっくり動かす
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var fans = [].slice.call(document.querySelectorAll('.fan[data-speed]')), tick = false;
+  var fans = [].slice.call(document.querySelectorAll('.fan[data-speed]')), plx = [].slice.call(document.querySelectorAll('.plx')), hero = document.querySelector('.fv__img'), tick = false;
   function run() {
     var vh = innerHeight;
     fans.forEach(function (f) {
@@ -21,6 +21,13 @@
       if (r.bottom < -200 || r.top > vh + 200) return;
       var d = (r.top + r.height / 2 - vh / 2) * Number(f.dataset.speed);
       f.style.transform = 'translate3d(0,' + (-d).toFixed(1) + 'px,0)';
+    });
+    if (hero && scrollY < vh * 1.2) hero.style.setProperty('--py', (scrollY * 0.16).toFixed(1) + 'px');
+    plx.forEach(function (im) {
+      var r = im.parentNode.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      var p = (r.top + r.height / 2 - vh / 2) / vh;
+      im.style.setProperty('--py', (-6 - p * 5).toFixed(2) + '%');
     });
     tick = false;
   }
