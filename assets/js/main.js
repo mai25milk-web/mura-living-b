@@ -11,17 +11,15 @@
     items.forEach(function (el) { io.observe(el); });
   } else { items.forEach(function (el) { el.classList.add('is-in'); }); }
 
-  // 扇形のモチーフをスクロールに合わせてゆっくり動かす
+  // 風の線
+  var windSvg = '<svg viewBox="0 0 600 200"><path pathLength="100" d="M0 120C90 120 150 90 230 90s130 40 210 30 100-60 60-90-90 0-70 30"/><path pathLength="100" d="M40 150C140 150 220 130 320 135s170 20 240-10"/><path pathLength="100" d="M0 70C70 72 120 56 190 50s120-6 170 14c34 14 60-6 46-30s-50-16-44 12"/><path pathLength="100" d="M120 178C200 170 300 176 380 168"/></svg>';
+  document.querySelectorAll('.wind').forEach(function (w) { w.innerHTML = windSvg; });
+
+  // スクロールの動き
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var fans = [].slice.call(document.querySelectorAll('.fan[data-speed]')), plx = [].slice.call(document.querySelectorAll('.plx')), hero = document.querySelector('.fv__img'), tick = false;
+  var plx = [].slice.call(document.querySelectorAll('.plx')), hero = document.querySelector('.fv__img'), tick = false;
   function run() {
     var vh = innerHeight;
-    fans.forEach(function (f) {
-      var r = f.getBoundingClientRect();
-      if (r.bottom < -200 || r.top > vh + 200) return;
-      var d = (r.top + r.height / 2 - vh / 2) * Number(f.dataset.speed);
-      f.style.transform = 'translate3d(0,' + (-d).toFixed(1) + 'px,0)';
-    });
     if (hero && scrollY < vh * 1.2) hero.style.setProperty('--py', (scrollY * 0.16).toFixed(1) + 'px');
     plx.forEach(function (im) {
       var r = im.parentNode.getBoundingClientRect();
